@@ -34,7 +34,7 @@ parameters as in Vonderach and Kändler (2021); species mapping as in
 \code{TapeS::BaMap(, type=7)}
 }
 \examples{
-nsur(spp = c(1, 15),
+nsur(spp = c(1, 6),
      dbh = c(30, 30),
      ht = c(25, 27),
      sth = c(0.25, 0.27),

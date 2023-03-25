@@ -61,7 +61,7 @@ biomass <- function(spp, d13, d03, h) {
 #' Biomassemodellen für die Bundeswaldinventur auf Basis des TapeR-Pakets -
 #' Abschlussbericht zum Projekt BWI-TapeR. Freiburg: 150p.
 #' @examples
-#' nsur(spp = c(1, 15),
+#' nsur(spp = c(1, 6),
 #'      dbh = c(30, 30),
 #'      ht = c(25, 27),
 #'      sth = c(0.25, 0.27),

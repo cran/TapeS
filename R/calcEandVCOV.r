@@ -21,6 +21,7 @@ calcVCOVsekVol <- function(estD, kovD, estL){
   varSek <- Cm^2 * (3*diag(kovD)^2 + 4*diag(kovD)*estD^2)
   ## es wird die kovarianz für d1^2*l1, d2^2*l2, ..... benötigt
   ## cov(cm*x^2, cm*y^2) = cm^2 * (4*mean(x)*mean(y)*cor(x,y)*sd(x)*sd(y) + 2*cor(x,y)^2*var(x)*var(y))
+  ## cf. last formula in appendix of Kublin et al (2013, p. 996)
   kovSek <- kovD # just copy for dimension
   diag(kovSek) <- Cm^2 * (3*diag(kovD)^2 + 4*diag(kovD)*estD^2)
   for(i in seq(along=estD)){

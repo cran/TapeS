@@ -261,7 +261,7 @@ setMethod("tprVolume", signature = "tprTrees",
                                                 par.lme = SKPar[[ SKspp[i] ]],
                                                 Rfn = Rfn)
                 D <- dlist[[ useLE ]]
-                kovD <- dlist[[ useMSE ]]
+                kovD <- dlist[[ useMSE ]] # not rounded (as compared to MSE_Mean/MSE_Pred)
                 vol <- colSums(pi/4 * 1e-4 * (D^2 + diag(kovD)) * ab$L)
 
                 if(identical(interval, "none")){
