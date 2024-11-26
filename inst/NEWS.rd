@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{NEWS}
 
+\section{Changes in version 0.12.1}{
+\itemize{
+\item corrected bug in example of nsur() function
+\item added CITATION file
+}
+}
+
 \section{Changes in version 0.12.0}{
 \itemize{
 \item function tprVolume now with MSE and interval information

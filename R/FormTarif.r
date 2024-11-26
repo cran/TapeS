@@ -45,8 +45,9 @@ FormTariff <- function(spp, Dbh, Ht, inv){
     warning("no inventory with indicator >5 (and < 0)! set inv=1 ")
   }
 
-  if(identical(Tarif, 5L) & requireNamespace("rBDAT")){
+  if(identical(Tarif, 5L) & !requireNamespace("rBDAT", quietly = TRUE)){
     message("R-package 'rBDAT' not installed; please install.packages('rBDAT'); \n Tarif set to 0")
+    Tarif <- 0L
   }
 
   if (identical(Tarif, 0L)){
@@ -58,7 +59,7 @@ FormTariff <- function(spp, Dbh, Ht, inv){
     EQ03 <- d03 / d005
 
   } else if(identical(Tarif, 5L)){
-    if(requireNamespace("rBDAT")){
+    if(requireNamespace("rBDAT", quietly = TRUE)){
       ## calculate the default taper from (quotient d03/d005) of taper curves
       EQ03 <- rBDAT::getForm(list(spp=spp, D1=Dbh, H1=1.3, H=Ht), inv=0)
     }

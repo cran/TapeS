@@ -65,7 +65,7 @@ check_trees <- function(object) {
   if(any(m <- sapply(1:length(object@spp), function(a){
     any(object@Ht[a] < object@Hm[[a]])}) )){
     msg <- paste0("'Hm' should be less than 'Ht' in each element")
-    msg2 <- paste0("; check element i = ", paste0(which(m==FALSE), collapse = ", "))
+    msg2 <- paste0("; check element i = ", paste0(which(m==TRUE), collapse = ", "))
     errors <- c(errors, paste0(msg, msg2))
   }
 
@@ -247,12 +247,12 @@ tprTrees <- function(spp=1L, Dm=list(c(30, 28)), Hm=list(c(1.3, 5)), Ht=30,
     if(length(Dm) == length(Ht)){
       ## same length, i.e. each element corresponds to one tree
 
-      if(!is.null(inv) & all.equal(Hm, rep(1.3, length(Hm)))){
+      if(!is.null(inv) & all(round(Hm, 1) == 1.3)){
         ## additionally, form information available
         inv <- ifelse(inv < 0 | inv > 5, 0, inv)
         q03 <- FormTariff(spp, Dm, Ht, inv)
         # TODO: this is like Münchhausen
-        # honestly, D005 is not exactly known, here we assume standard from
+        # honestly, D005 is not exactly known, here we assume standard form
         # otherwise we would need to iterate to find the correct D005 w.r.t. Dbh and q03
         D005 <- tprDiameter(tprTrees(spp=spp, Dm=Dm, Hm=Hm, Ht=Ht),
                             Hx=0.05*Ht, cp=FALSE)

@@ -159,12 +159,12 @@ NumericVector biomass(IntegerVector spp, NumericVector d13, NumericVector d03,
 //' @param ht vector of tree heights, in meter
 //' @param sth vector of stump heights, in meter
 //' @param d03 vector if diameter in 30\% of tree height, in centimeter
-//' @param kl vector of green crown base, in meter
+//' @param kl vector of crown length, i.e. tree height minus height of crown base, in meter
 //' @return a numeric matrix holding component biomass
 //' @details function to calculate component biomass; functions fitted using
 //' same methodology as in Vonderach et al. (2018) with slightly updated
 //' parameters as in Vonderach and Kändler (2021); species mapping as in
-//' \code{TapeS::BaMap(, type=7)}
+//' \code{TapeS::BaMap(, type=7)};
 //' @references Vonderach, C., G. Kändler and C. F. Dormann (2018).
 //' "Consistent set of additive biomass functions for eight tree species in
 //' Germany fit by nonlinear seemingly unrelated regression."
@@ -185,6 +185,16 @@ NumericVector biomass(IntegerVector spp, NumericVector d13, NumericVector d03,
 // [[Rcpp::export]]
 NumericMatrix nsur(IntegerVector spp, NumericVector dbh, NumericVector ht,
                    NumericVector sth, NumericVector d03, NumericVector kl){
+  int n = spp.size();
+  //check input vector spp
+  for(int i = 0; i < n; ++i) {
+
+    if((spp[i] > 8 || spp[i] < 1 || IntegerVector::is_na(spp[i]))){
+      spp[i] = 1;
+    }
+
+  }
+
   // defining parameters for biomass equation
   // a + b * BHD^c * Hoehe^d * D03^e * Stockhoehe^f * KL^g * DH^h
   // parameter array each with 8 species (rows) and 6 components (cols)
@@ -208,7 +218,7 @@ NumericMatrix nsur(IntegerVector spp, NumericVector dbh, NumericVector ht,
     {0.0303, 0.0039, 0.0214, 0.0016, 0.4248, 0},
     {0.0359, 0.0153, 0.0156, 0.0052, 0.3631, 0},
     {0.0487, 0.0095, 0.0178, 0.0045, 1e-04, 0},
-    {0.0126, 0.4908, 0.0146, 0, 0.1298, 0}
+    {0.0126, 0.4908, 0.0146, 1, 0.1298, 0}
   };
   double c[8][6] = {
     {2.1363, 1.7085, 0.8808, 0.4272, 1.5836, 1.2606},
@@ -273,7 +283,126 @@ NumericMatrix nsur(IntegerVector spp, NumericVector dbh, NumericVector ht,
 
   int nx = spp.length();  // number of elements to process
   IntegerVector idx = seq_along(spp);
-  NumericVector DH = dbh * ht;
+  NumericVector DH = dbh * (ht - sth); //only for species 'es'
+  NumericMatrix res(spp.length(), 7);
+
+
+  res(_, 0) = idx; // referencing given observation for later purpose
+  for(int i=0; i<nx; i++){
+    for(int j=0; j<6; j++){
+      // Rcpp::Rcout << a[ spp[i]-1 ][ j ] << std::endl;
+      res(i, j+1) = a[ spp[i]-1 ][ j ] +
+        b[ spp[i]-1 ][ j ] *
+        pow(dbh[i], c[ spp[i]-1 ][ j ]) *
+        pow((ht[i] - sth[i]), d[ spp[i]-1 ][ j ]) *
+        pow(d03[i], e[ spp[i]-1 ][ j ]) *
+        pow(sth[i], f[ spp[i]-1 ][ j ]) *
+        pow(kl[i], g[ spp[i]-1 ][ j ]) *
+        pow(DH[i], h[ spp[i]-1 ][ j ]);
+    }
+  }
+  // adding column names
+  colnames(res) = CharacterVector::create("id", "stw", "stb", "sw", "sb",
+           "fwb", "ndl");
+
+  return res;
+}
+
+//' Component biomass functions
+//'
+//' evaluation of the component biomass functions fit by nonlinear seemingly
+//' unrelated regression (NSUR) to estimate absolute or relative component mass
+//'
+//' @param spp vector of species code for biomass component function of interval
+//' [1;8]; see \code{\link{BaMap}} for mapping of species model codes
+//' @param dbh vector of diameter in breast height; in centimeter
+//' @param ht vector of tree heights, in meter
+//' @return a numeric matrix holding component biomass
+//' @details simple function from Vonderach et al. (2018) to calculate component
+//' biomass; species mapping as in \code{TapeS::BaMap(, type=7)}
+//' @references Vonderach, C., G. Kändler and C. F. Dormann (2018).
+//' "Consistent set of additive biomass functions for eight tree species in
+//' Germany fit by nonlinear seemingly unrelated regression."
+//' Annals of Forest Science 75(2): 49.
+//' \doi{10.1007/s13595-018-0728-4}
+//'
+//' @examples
+//' nsur2(spp = c(1, 6),
+//'       dbh = c(30, 30),
+//'       ht = c(25, 27))
+//' @export
+// [[Rcpp::export]]
+NumericMatrix nsur2(IntegerVector spp, NumericVector dbh, NumericVector ht){
+  int n = spp.size();
+  //check input vector spp
+  for(int i = 0; i < n; ++i) {
+
+    if((spp[i] > 8 || spp[i] < 1 || IntegerVector::is_na(spp[i]))){
+      spp[i] = 1;
+    }
+
+  }
+
+  // defining parameters for biomass equation
+  // a + b * BHD^c * Hoehe^d * Stockhoehe^e
+  // parameter array each with 8 species (rows) and 6 components (cols)
+  // rows=(fi, ta, kie, dgl, bu, ei, bah, es)
+  // cols=(stump, stump bark, coarse wood, coarse wood bark, small wood, needles)
+  double a[8][6] = { // intcpt
+    {0, -0.0128, 0, 0, 1.8472, -1.6847},  //fi
+    {0, 0, 0, 0, 0, 0},                   //ta
+    {0, 0, 0, 0, 0, 0},                   //kie
+    {0, 0, 0, 0, 0, -1.8821},             //dgl
+    {0, 0, -4.6332, 0, 0, 0},             //bu
+    {0, 0, -3.9731, 0, 0, 0},             //ei
+    {0, 0, 0, 0, 0, 0},                   //bah
+    {0, 0, 0, 0, 0, 0}                    //es
+  };
+  double b[8][6] = { //scale
+    {0.0220, 0.0067, 0.0142, 0.0038, 0.0243, 0.2850}, //fi
+    {0.0121, 0.0036, 0.0046, 0.0019, 0.0273, 0.1071}, //ta
+    {0.0624, 0.0077, 0.0173, 0.0055, 0.1316, 0.1484}, //kie
+    {0.0186, 0.0032, 0.0131, 0.0018, 0.2784, 0.2749}, //dgl
+    {0.0315, 0.0040, 0.0190, 0.0013, 0.4006, 0},      //bu
+    {0.0363, 0.0158, 0.0223, 0.0043, 0.3028, 0},      //ei
+    {0.0596, 0.0121, 0.0170, 0.0040, 0.0426, 0},      //bah
+    {0.0111, 0.0367, 0.0220, 0.0006, 0.0966, 0}       //es
+  };
+  double c[8][6] = { // dbh
+    {2.1212, 1.7268, 1.7414, 1.6076, 2.9671, 2.1173}, //fi
+    {2.2645, 2.1225, 1.1917, 1.4458, 2.2573, 1.6952}, //ta
+    {1.9322, 1.8127, 2.0072, 2.0108, 2.4440, 2.3320}, //kie
+    {2.1850, 2.0357, 1.9299, 1.9099, 3.1276, 2.4833}, //dgl
+    {2.1447, 1.9184, 2.0861, 1.9596, 2.3211, 0},      //bu
+    {2.0657, 1.7910, 2.1012, 1.9437, 2.1945, 0},      //ei
+    {1.9934, 1.8062, 2.0710, 2.0287, 2.1166, 0},      //bah
+    {2.4593, 1.4515, 2.0683, 1.7301, 1.9989, 0}       //es
+  };
+  double d[8][6] = { // ht
+    {0, 0, 1.2401, 1.0528, -0.8183, -0.8334}, //fi
+    {0, 0, 2.2103, 1.6780, 0, 0},             //ta
+    {0, 0, 0.9140, 0.5374, -0.9490, -1.2026}, //kie
+    {0, 0, 1.0715, 1.0306, -1.7984, -1.3051}, //dgl
+    {0, 0, 0.9502, 1.0990, -0.7636, 0},       //bu
+    {0, 0, 0.8647, 0.9576, -0.6882, 0},       //ei
+    {0, 0, 0.9317, 0.7446, 0, 0},             //bah
+    {0, 0, 0.9050, 1.7301, 0, 0}              //es
+  };
+  double e[8][6] = { //stump-ht
+    {0.6056, 0.5947, 0, 0, 0, 0}, //fi
+    {0.7596, 0.7856, 0, 0, 0, 0}, //ta
+    {1.0414, 0.8732, 0, 0, 0, 0}, //kie
+    {0.7723, 0.7621, 0, 0, 0, 0}, //dgl
+    {0.7980, 0.8076, 0, 0, 0, 0}, //bu
+    {0.7721, 0.9032, 0, 0, 0, 0}, //ei
+    {0.8314, 0.8178, 0, 0, 0, 0}, //bah
+    {0.7579, 0.7298, 0, 0, 0, 0}  //es
+  };
+
+
+  int nx = spp.length();  // number of elements to process
+  IntegerVector idx = seq_along(spp);
+  NumericVector sth = 0.007 * ht; // according to the fitting data see devel/check-sth-kro.r
   NumericMatrix res(spp.length(), 7);
 
 
@@ -285,10 +414,7 @@ NumericMatrix nsur(IntegerVector spp, NumericVector dbh, NumericVector ht,
         b[ spp[i]-1 ][ j ] *
         pow(dbh[i], c[ spp[i]-1 ][ j ]) *
         pow(ht[i], d[ spp[i]-1 ][ j ]) *
-        pow(d03[i], e[ spp[i]-1 ][ j ]) *
-        pow(sth[i], f[ spp[i]-1 ][ j ]) *
-        pow(kl[i], g[ spp[i]-1 ][ j ]) *
-        pow(DH[i], h[ spp[i]-1 ][ j ]);
+        pow(sth[i], e[ spp[i]-1 ][ j ]);
     }
   }
   // adding column names

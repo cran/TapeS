@@ -53,6 +53,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// nsur2
+NumericMatrix nsur2(IntegerVector spp, NumericVector dbh, NumericVector ht);
+RcppExport SEXP _TapeS_nsur2(SEXP sppSEXP, SEXP dbhSEXP, SEXP htSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type spp(sppSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type dbh(dbhSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ht(htSEXP);
+    rcpp_result_gen = Rcpp::wrap(nsur2(spp, dbh, ht));
+    return rcpp_result_gen;
+END_RCPP
+}
 // spline_basis
 List spline_basis(NumericVector knots, IntegerVector order, NumericVector xvals, IntegerVector derivs);
 RcppExport SEXP _TapeS_spline_basis(SEXP knotsSEXP, SEXP orderSEXP, SEXP xvalsSEXP, SEXP derivsSEXP) {
@@ -87,6 +100,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_TapeS_petterson", (DL_FUNC) &_TapeS_petterson, 2},
     {"_TapeS_biomass", (DL_FUNC) &_TapeS_biomass, 4},
     {"_TapeS_nsur", (DL_FUNC) &_TapeS_nsur, 6},
+    {"_TapeS_nsur2", (DL_FUNC) &_TapeS_nsur2, 3},
     {"_TapeS_spline_basis", (DL_FUNC) &_TapeS_spline_basis, 4},
     {"_TapeS_lmeSKEBLUP", (DL_FUNC) &_TapeS_lmeSKEBLUP, 5},
     {NULL, NULL, 0}

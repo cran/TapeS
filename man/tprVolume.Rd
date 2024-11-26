@@ -98,9 +98,10 @@ tprVolume(obj, AB = list(A=A, B=B, sl=0.01), iAB = "H", bark=TRUE)
 
 ## compare against integrated taper curve volume via package TapeR
 ## TapeR integrates over the taper curve, while TapeS uses segments of length 'sl'
+SKP <- TapeS:::SKPar
 TapeR::E_VOL_AB_HmDm_HT.f(Hm=obj@Hm[[1]], Dm = obj@Dm[[1]], iDH = "H",
                           mHt = obj@Ht[1], sHt = 0, A = A, B = B,
-                          par.lme=SKPar[[1]])$E_VOL
+                          par.lme=SKP[[1]])$E_VOL
 
 ## returning intervals
 tprVolume(obj, interval="none")

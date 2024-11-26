@@ -58,15 +58,15 @@ spp <- spp(tmp)
 Hm <- Hm(tmp)
 Dm <- Dm(tmp)
 H <- Ht(tmp)
-data("SKPar")
+SKP <- TapeS:::SKPar
 sppSK <- BaMap(spp, 1) # tree species for taper curve
 ## diameter in 5m height
-TapeR::E_DHx_HmDm_HT.f(c(5, 10), Hm, Dm, mHt=H, sHt = 0, par.lme = SKPar[[sppSK]])$DHx
-(D5m <- TapeR::E_DHx_HmDm_HT.f(c(5, 10), Hm, Dm, mHt=H, sHt = 0, par.lme = SKPar[[sppSK]])$DHx)
+TapeR::E_DHx_HmDm_HT.f(c(5, 10), Hm, Dm, mHt=H, sHt = 0, par.lme = SKP[[sppSK]])$DHx
+(D5m <- TapeR::E_DHx_HmDm_HT.f(c(5, 10), Hm, Dm, mHt=H, sHt = 0, par.lme = SKP[[sppSK]])$DHx)
 ## bark thickness of diameter in 5m height
 (RiD5m <- bark(c(1,1), Dm = D5m, relH = c(5, 10)/H))
 ## find height of diameter without bark, which should be 5m
 d5mub <- D5m - RiD5m
 E_HDxoR_HmDm_Ht.f(DxoR = d5mub, Hm = Hm, Dm = Dm, mHt = H,
-                  sHt = 0, par.lme = SKPar[[sppSK]])
+                  sHt = 0, par.lme = SKP[[sppSK]])
 }

@@ -45,12 +45,12 @@ biomass <- function(spp, d13, d03, h) {
 #' @param ht vector of tree heights, in meter
 #' @param sth vector of stump heights, in meter
 #' @param d03 vector if diameter in 30\% of tree height, in centimeter
-#' @param kl vector of green crown base, in meter
+#' @param kl vector of crown length, i.e. tree height minus height of crown base, in meter
 #' @return a numeric matrix holding component biomass
 #' @details function to calculate component biomass; functions fitted using
 #' same methodology as in Vonderach et al. (2018) with slightly updated
 #' parameters as in Vonderach and Kändler (2021); species mapping as in
-#' \code{TapeS::BaMap(, type=7)}
+#' \code{TapeS::BaMap(, type=7)};
 #' @references Vonderach, C., G. Kändler and C. F. Dormann (2018).
 #' "Consistent set of additive biomass functions for eight tree species in
 #' Germany fit by nonlinear seemingly unrelated regression."
@@ -70,6 +70,33 @@ biomass <- function(spp, d13, d03, h) {
 #' @export
 nsur <- function(spp, dbh, ht, sth, d03, kl) {
     .Call(`_TapeS_nsur`, spp, dbh, ht, sth, d03, kl)
+}
+
+#' Component biomass functions
+#'
+#' evaluation of the component biomass functions fit by nonlinear seemingly
+#' unrelated regression (NSUR) to estimate absolute or relative component mass
+#'
+#' @param spp vector of species code for biomass component function of interval
+#' [1;8]; see \code{\link{BaMap}} for mapping of species model codes
+#' @param dbh vector of diameter in breast height; in centimeter
+#' @param ht vector of tree heights, in meter
+#' @return a numeric matrix holding component biomass
+#' @details simple function from Vonderach et al. (2018) to calculate component
+#' biomass; species mapping as in \code{TapeS::BaMap(, type=7)}
+#' @references Vonderach, C., G. Kändler and C. F. Dormann (2018).
+#' "Consistent set of additive biomass functions for eight tree species in
+#' Germany fit by nonlinear seemingly unrelated regression."
+#' Annals of Forest Science 75(2): 49.
+#' \doi{10.1007/s13595-018-0728-4}
+#'
+#' @examples
+#' nsur2(spp = c(1, 6),
+#'       dbh = c(30, 30),
+#'       ht = c(25, 27))
+#' @export
+nsur2 <- function(spp, dbh, ht) {
+    .Call(`_TapeS_nsur2`, spp, dbh, ht)
 }
 
 spline_basis <- function(knots, order, xvals, derivs) {

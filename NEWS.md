@@ -1,3 +1,24 @@
+# TapeS 0.13.0
+
+* implemented variance estimates for biomass estimates, based on the NSUR 
+  component biomass functions. See details in tprBiomass-helpfile for how this 
+  was done.
+* added function nsur2() implementing the 'simple' biomass functions of 
+  Vonderach et al. 2018 (internal).
+* corrected function nsur(), now using the adjusted tree height (tree height minus
+  stump height) for prediction as detailed in Vonderach & Kändler (2021)
+* bugfix in internal nsur()-function: one parameter in ash was wrong (led to
+  negative estimates in small trees).
+* extended tprBiomass: now optionally scale NSUR- to NFI-estimate
+* moved internal data to sysdata instead of data/, hence, package runs also if
+  not attached (e.g. calls via TapeS::tprVolume don't break)
+* added citation file
+* corrected minor bugs, some internal improvements
+
+# TapeS 0.12.1
+
+* corrected bug in example of nsur() function
+
 # TapeS 0.12.0
 
 * function tprVolume now with MSE and interval information

@@ -57,9 +57,10 @@
 #'
 #' ## compare against integrated taper curve volume via package TapeR
 #' ## TapeR integrates over the taper curve, while TapeS uses segments of length 'sl'
+#' SKP <- TapeS:::SKPar
 #' TapeR::E_VOL_AB_HmDm_HT.f(Hm=obj@Hm[[1]], Dm = obj@Dm[[1]], iDH = "H",
 #'                           mHt = obj@Ht[1], sHt = 0, A = A, B = B,
-#'                           par.lme=SKPar[[1]])$E_VOL
+#'                           par.lme=SKP[[1]])$E_VOL
 #'
 #' ## returning intervals
 #' tprVolume(obj, interval="none")
@@ -103,6 +104,12 @@ setMethod("tprVolume", signature = "tprTrees",
             ## get species code for taper curve / Schaftkurve
             SKspp <- BaMap(obj@spp, 1)
             if(is.null(Rfn)) Rfn <- getOption("TapeS_Rfn")
+
+            ## check iAB: which element not valid? wenv
+            wenv <- iAB[which(!(tolower(iAB) %in% c("h", "dub", "dob")))]
+            if(length(wenv) > 0){
+              stop(paste0("iAB should be in 'h', 'dub' or 'dob', not: ", wenv))
+            }
 
             ## (re)define A, B and sl
             ## transform A into height if necessary
