@@ -1,7 +1,7 @@
-21de8875ff52c7bb08c7821dcbffa265 *DESCRIPTION
+ca6769260ee6f9c83fe6a0bab95e5e69 *DESCRIPTION
 f97fff5af0d6dd28aea987cf29881d27 *LICENSE
 16ea66ae3e8f7533b3909fec4a9d148d *NAMESPACE
-c3e9c9ff26ccc71c0880d8d00c008a94 *NEWS.md
+3c7bb101f29749855dafb6255d3aeec8 *NEWS.md
 7ecd41b7e18401abdf904e2ddcb0f1ce *R/Az.r
 ae81bb1d7d45ee900576854fabf1ac85 *R/BaMap.r
 1938cc142858b9c1939103368427ecbd *R/Dbh.r
@@ -32,14 +32,13 @@ b8e80fc2b7d87259a5a403846eca029c *R/tprBark.r
 1ca3c5d30ad38bb04768c0521c22128c *R/tprDiameterCpp.r
 a8a3a6e19ca98d67015a89b36490dec5 *R/tprHeight.r
 0a3b1aacda6f7e81b9a274a907ac9d32 *R/tprSpeciesCode.r
-7541f7ae202ae27e0db5e316a5ab4960 *R/tprVolume.r
+5cd15bdf095f9847710e2259ce54fe7e *R/tprVolume.r
 3703c5a6b753593d1d4051ddb9a08150 *R/zzz.r
-50d86fe5064f5df99b81dbab4441347f *build/partial.rdb
+1587213b4789698e056a23deb4171aee *build/partial.rdb
 81f49d2edee968b4e13401511ee042a7 *build/vignette.rds
 58f6181b804bdb798c3ce6c6c36152a6 *inst/CITATION
-2028a13ddd9f702b5276332addd92751 *inst/NEWS.rd
 c1f06619aaaf25099f65c078927f7502 *inst/doc/tapes.R
-52ba9a618351dbde6b9f617544e3bd64 *inst/doc/tapes.html
+3b063d2d216319c74882b6ee983b182a *inst/doc/tapes.html
 b97279e92beb68b3e0ffcc6b5653389d *inst/doc/tapes.rmd
 e5f788af97bd4e58b644c1af47d35fd0 *inst/tinytest/test_biomass.r
 4f34125c3b665508ade358e8923e5f2c *man/Az.Rd
@@ -79,7 +78,7 @@ d98054bd081ed46f767c0349cda0ef35 *man/tprDiameterCpp.Rd
 17a99c4a4c838fdceb46b8a705adcdda *man/tprSpeciesCode.Rd
 39247aa53e9b8dcfea27190830e0005b *man/tprTrees-class.Rd
 d917c934430c28021b494603fe424bd2 *man/tprTrees.Rd
-07373e0e2e34924b114db6be3b75f280 *man/tprVolume.Rd
+77995c2bd89a5f2b1965085c651486a1 *man/tprVolume.Rd
 a53000b6f85b4452db28a7743bf85d66 *src/BiomassFn.cpp
 486f41757d14cde9b0e4113010588393 *src/Makevars
 e62585629948e7dd143efbad43c2a6eb *src/Makevars.win

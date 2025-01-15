@@ -1,3 +1,9 @@
+# TapeS 0.13.1
+
+* extended internal function which calculated position and length of measurement
+  position during volume estimation: now parameter AB in tprVolume can both be
+  set to zero with no error.
+  
 # TapeS 0.13.0
 
 * implemented variance estimates for biomass estimates, based on the NSUR 
