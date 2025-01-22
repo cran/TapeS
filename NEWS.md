@@ -1,8 +1,16 @@
+# TapeS 0.13.2
+
+* in tprVolume now checking lower end 'A' of segment against upper end 'B' of
+  segment: 'A' should be lower or equal 'B'. This is especially important if one
+  of both is given as a diameter and the other as a height.
+* bug fix in uncertainty estimation of biomass for deciduous trees and requested
+  component 'ndl'.
+
 # TapeS 0.13.1
 
 * extended internal function which calculated position and length of measurement
   position during volume estimation: now parameter AB in tprVolume can both be
-  set to zero with no error.
+  zero with no error and returning reasonable information: 0.
   
 # TapeS 0.13.0
 
