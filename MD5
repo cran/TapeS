@@ -1,7 +1,7 @@
-bccbe2ddd57fb12298a4d640580a216c *DESCRIPTION
+518259907eebeef25ccd596c990f3e5e *DESCRIPTION
 f97fff5af0d6dd28aea987cf29881d27 *LICENSE
 16ea66ae3e8f7533b3909fec4a9d148d *NAMESPACE
-7e27e912d3b402f33653bd790e12b774 *NEWS.md
+70474448a5517e8de07d8a18a52d6c92 *NEWS.md
 7ecd41b7e18401abdf904e2ddcb0f1ce *R/Az.r
 ae81bb1d7d45ee900576854fabf1ac85 *R/BaMap.r
 1938cc142858b9c1939103368427ecbd *R/Dbh.r
@@ -24,7 +24,7 @@ fb93cca3635587db7f230378831cd366 *R/plottprTrees.R
 7b0a4558e27242259a6bf69e64eaeb29 *R/predictNSUR.r
 fc787eefcad576f951544789f360f94a *R/setOptions.r
 3175848035882be12930f0b6119ef3f3 *R/simTrees.r
-1d69aef0ad3fd1149260590fb91d932f *R/sysdata.rda
+790071bbecdc02326e296021b8f8c368 *R/sysdata.rda
 e9b24abb8a5e20dc800382ff247fbce4 *R/tprAssortment.r
 b8e80fc2b7d87259a5a403846eca029c *R/tprBark.r
 c08934a0a9d28426db329a835a1940bc *R/tprBiomass.r
@@ -34,11 +34,11 @@ a8a3a6e19ca98d67015a89b36490dec5 *R/tprHeight.r
 0a3b1aacda6f7e81b9a274a907ac9d32 *R/tprSpeciesCode.r
 b2e82408e2b39c339219ba0f33eece76 *R/tprVolume.r
 3703c5a6b753593d1d4051ddb9a08150 *R/zzz.r
-6f3925b72b1a00b0d0d2436195e9fdfc *build/partial.rdb
+ffd0212b744a0c85ae138671df7d4d7f *build/partial.rdb
 81f49d2edee968b4e13401511ee042a7 *build/vignette.rds
 58f6181b804bdb798c3ce6c6c36152a6 *inst/CITATION
-c1f06619aaaf25099f65c078927f7502 *inst/doc/tapes.R
-004dd137e391a09a99144e4bddeda283 *inst/doc/tapes.html
+c55d1aff1a23557a29bef5d8a02913f7 *inst/doc/tapes.R
+56edaabe8eb2ae0d68ed0c403c1830df *inst/doc/tapes.html
 b97279e92beb68b3e0ffcc6b5653389d *inst/doc/tapes.rmd
 e5f788af97bd4e58b644c1af47d35fd0 *inst/tinytest/test_biomass.r
 4f34125c3b665508ade358e8923e5f2c *man/Az.Rd

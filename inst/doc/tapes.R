@@ -1,14 +1,14 @@
 ## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  remotes::install_gitlab(„vochr/tapes“, build_vignettes = TRUE)
+## ----eval=FALSE---------------------------------------------------------------
+# remotes::install_gitlab(„vochr/tapes“, build_vignettes = TRUE)
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  help("tprTrees-class")
+## ----eval=FALSE---------------------------------------------------------------
+# help("tprTrees-class")
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  help("parSort-class")
+## ----eval=FALSE---------------------------------------------------------------
+# help("parSort-class")
 
 ## -----------------------------------------------------------------------------
 require(TapeS)
@@ -64,7 +64,7 @@ tprBiomass(obj) # bwi-biomass
 tprBiomass(obj, component = c("sw", "sb", "ndl")) 
 tprBiomass(obj, component = c("all"))
 
-## ---- eval=TRUE---------------------------------------------------------------
+## ----eval=TRUE----------------------------------------------------------------
 setTapeSoptions(Rfn = list(fn="zero"))
 tprDiameter(obj, Hx=1.3)
 setTapeSoptions(Rfn = list(fn="sig2"))

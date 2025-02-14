@@ -1,3 +1,7 @@
+# TapeS 0.13.3
+
+* removed unnecessary data set from package
+
 # TapeS 0.13.2
 
 * in tprVolume now checking lower end 'A' of segment against upper end 'B' of
