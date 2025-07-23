@@ -42,6 +42,8 @@ setMethod("tprAssortment", signature = "tprTrees",
           function(obj, pars=NULL, mono=TRUE, Rfn=NULL){
             if(is.null(pars)) pars=parSort(n=length(obj)) # default values
 
+            stopifnot("TapeS::tprAssortment: parameter set of wrong length"= length(pars@stH) == length(obj@spp))
+
             if(!is.null(Rfn)){
               oldRfn <- options()$TapeS_Rfn
               options("TapeS_Rfn" = Rfn)
@@ -119,8 +121,12 @@ setMethod("tprAssortment", signature = "tprTrees",
               ## calculate fix length assortment
               if(pars@fixN[i] >= 1){
                 actl <- Hfix[i] - acth # actual available length
-                nfix <- as.integer(min(c(actl %/% pars@fixL[i], pars@fixN[i])))
                 lfix <- pars@fixL[i] + pars@fixA[i] # gross length
+                nfix <- actl %/% lfix
+                ## check for additional fix length, as the last is shorter since
+                ## add-on, does not count on cutting diameter
+                nfix <- nfix + (actl - nfix*lfix) %/% pars@fixL[i]
+                nfix <- as.integer(min(nfix, pars@fixN[i]))
                 hfx <- acth + lfix/2 + (0:(nfix-1))*lfix # height of measurement
                 dfxmr <- tprDiameterCpp(obj[i], Hx=hfx, bark = TRUE)
                 dfxmr <- dfxmr - ifelse(dfxmr >= 20, 0.75, 0.5)
@@ -137,7 +143,7 @@ setMethod("tprAssortment", signature = "tprTrees",
               }
 
               ## calculate sh
-              if(acth + 3 < Hsh[i]){ # Sth should be at least 3m
+              if(acth + 3 < Hsh[i]){ # Sth should be at least 3m # TODO: variable minimum length
                 lsh <- floor((Hsh[i] - acth) * 10) / 10 # round to 10cm
                 lsh <- ifelse(lsh > pars@trL[i], pars@trL[i], lsh)
                 dshmr <- tprDiameterCpp(obj[i], Hx = acth + lsh/2, bark=TRUE)
@@ -154,7 +160,7 @@ setMethod("tprAssortment", signature = "tprTrees",
               }
 
               ## calculate ab
-              if(acth + 3 < Hab[i]){
+              if(acth + 3 < Hab[i]){ # TODO: variable minimum length
                 lab <- floor((Hab[i] - acth) * 10) / 10 # round to 10cm
                 lab <- ifelse(lab > pars@trL[i], pars@trL[i], lab)
                 dabmr <- tprDiameter(obj[i], Hx = acth + lab/2, bark=TRUE)
@@ -173,21 +179,28 @@ setMethod("tprAssortment", signature = "tprTrees",
               ## calculate ih + nvdh
               if(obj@spp[i]<15){
                 # conifers
-                if((acth + 1) <= HAz[i]){ # at least 1m for industrial wood
+                if((acth + 1) <= HAz[i]){ # at least 1m for industrial wood # TODO: variable minimum length
                   lih <- floor(HAz[i] - acth) # round to full meter
-                  lih <- ifelse(lih > pars@trL[i], pars@trL[i], lih)
-                  if(pars@LIh[i] >=1){
+                  if(pars@LIh[i] >= 1){
                     ## fixed length without add on # TODO
-                    nih <- lih %/% pars@LIh[i]
-                    lih <- pars@LIh[i]
-                    hih <- acth + lih/2 + (0:(nih-1)) * lih
-                    dihmr <- tprDiameter(obj[i], Hx = hih, bark=TRUE)
-                    dihmr <- dihmr - ifelse(dihmr >= 20, 0.75, 0.5)
-                    mdmih <- dihmr - bark(rep(obj@spp[i], length(hih)), Dm = dihmr, relH = hih/obj@Ht[i])
-                    volih <- pi * (mdmih/200)^2 * lih
-                    acthih <- acth + (0:(nih-1)) * lih
-                    acth <- acth + nih * lih * 1.0 # TODO: Ih variable add-on; in BDAT NO add-on!
+                    nih <- lih %/% pars@LIh[i] # fix: check if nih >= 1
+                    if(nih<=0){
+                      volih <- 0
+                      mdmih <- 0
+                      lih <- 0
+                      acthih <- 0
+                    } else {
+                      lih <- pars@LIh[i]
+                      hih <- acth + lih/2 + (0:(nih-1)) * lih
+                      dihmr <- tprDiameter(obj[i], Hx = hih, bark=TRUE)
+                      dihmr <- dihmr - ifelse(dihmr >= 20, 0.75, 0.5)
+                      mdmih <- dihmr - bark(rep(obj@spp[i], length(hih)), Dm = dihmr, relH = hih/obj@Ht[i])
+                      volih <- pi * (mdmih/200)^2 * lih
+                      acthih <- acth + (0:(nih-1)) * lih
+                      acth <- acth + nih * lih * 1.0 # TODO: Ih variable add-on; in BDAT NO add-on!
+                    }
                   } else {
+                    lih <- ifelse(lih > pars@trL[i], pars@trL[i], lih) #
                     # unrestricted length if pars@LIh == 0
                     dihmr <- tprDiameter(obj[i], Hx = acth + lih/2, bark=TRUE)
                     dihmr <- dihmr - ifelse(dihmr >= 20, 0.75, 0.5)
@@ -297,7 +310,7 @@ setMethod("tprAssortment", signature = "tprTrees",
 
               ## build resulting data.frame holding all relevant assortment information
               sortfix <- paste0("fix", formatC(seq(along=volfx), width = 2, format = "d", flag = "0"))
-              if(length(volih)> 1 | obj@spp[i]>14){
+              if(length(volih) <= 1 | obj@spp[i] > 14){
                 sortih <- "ih"
               } else {
                 sortih <- paste0("ih", formatC(seq(along=volih), width = 2, format = "d", flag = "0"))

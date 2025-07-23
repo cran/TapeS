@@ -1,3 +1,12 @@
+# TapeS 0.13.4
+
+* bug fixes in tprAssortment: fixed length assortment with corrected number 
+  calculation; corrected ih calculation when remaining piece not long enough for
+  required ih length
+* added exception in tprAssortment for mismatch between number of parameter and 
+  number of trees
+* bug fixes in HDxor(): diameters larger than base diameter return zero now 
+
 # TapeS 0.13.3
 
 * removed unnecessary data set from package

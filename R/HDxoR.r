@@ -50,17 +50,19 @@ E_HDxoR_HmDm_Ht.f <- function (DxoR, Hm, Dm, mHt, sHt = 0, par.lme, Rfn=NULL, ..
   for(k in seq(along=as.vector(DxoR))){
     d <- as.vector(DxoR)[k]
     Ddiff <- tprDiameter(tpr, Hx = xseq, bark=FALSE) - d
-    xnull <- xseq[which(Ddiff == 0)]
-    Dprod <- Ddiff[1:100] * Ddiff[2:101]
-    for(i in which(Dprod < 0)){
-      xnull <- c(xnull,
-                 uniroot(HxoR_root.f, c(xseq[i], xseq[i + 1]), tol = 0.00001,
-                         d, Hm, Dm, mHt, sHt, par.lme, Rfn)$root)
+    if(all(Ddiff<0)){
+      Hx[k] <- 0
+    } else {
+      xnull <- xseq[which(Ddiff == 0)]
+      Dprod <- Ddiff[1:100] * Ddiff[2:101]
+      for(i in which(Dprod < 0)){
+        xnull <- c(xnull,
+                   uniroot(HxoR_root.f, c(xseq[i], xseq[i + 1]), tol = 0.00001,
+                           d, Hm, Dm, mHt, sHt, par.lme, Rfn)$root)
+      }
+      Hx[k] = max(xnull)
     }
-    Hx[k] = max(xnull)
   }
-
-
   return(Hx)
 }
 

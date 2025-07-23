@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">Extend TapeR by implementing sorting and
 related aspects of forestry in R</h1>
 <h4 class="author">Christian Vonderach</h4>
-<h4 class="date">14 Februar, 2025</h4>
+<h4 class="date">23 Juli, 2025</h4>
 
 
 
@@ -387,7 +387,7 @@ might chance if further data leads to the development of additional
 taper curve models.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">require</span>(TapeS)</span></code></pre></div>
 <pre><code>## Lade nötiges Paket: TapeS</code></pre>
-<pre><code>## This is TapeS 0.13.3
+<pre><code>## This is TapeS 0.13.4
 ## Option &#39;TapeS_Rfn&#39; set to &#39;sig2&#39;. See &#39;?setTapeSoptions&#39; for details.</code></pre>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">tprSpeciesCode</span>(<span class="at">inSp =</span> <span class="cn">NULL</span>, <span class="at">outSp =</span> <span class="cn">NULL</span>)</span></code></pre></div>
 <pre><code>##    ID kurz            lang short                long            scientific
@@ -573,10 +573,10 @@ diameter is required, e.g. for relative height, the parameter cp=FALSE
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a><span class="fu">tprAssortment</span>(obj) <span class="do">## default assortment parameters</span></span></code></pre></div>
 <pre><code>##    tree sort height    length       mdm       zdm         vol
 ## 3     1  sth   0.27 19.000000 18.847735 11.721560 0.530104882
-## 5     1 ih01  19.46  1.000000 10.961870 10.384459 0.009437547
+## 5     1   ih  19.46  1.000000 10.961870 10.384459 0.009437547
 ## 6     1  nvd  20.46  3.160039  8.385469  6.051613 0.017451670
 ## 31    2  sth   0.30 19.000000 19.850787 14.712666 0.588029258
-## 51    2 ih01  19.49  4.000000 12.854161 10.818101 0.051908368
+## 51    2   ih  19.49  4.000000 12.854161 10.818101 0.051908368
 ## 61    2  nvd  23.49  3.468678  8.670170  5.987748 0.020479017</code></pre>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a>pars <span class="ot">&lt;-</span> <span class="fu">parSort</span>(<span class="at">stH=</span><span class="fl">0.2</span>, <span class="at">Lxh=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.5</span>), <span class="at">fixN=</span><span class="dv">2</span>, <span class="at">fixL=</span><span class="dv">4</span>)</span>
 <span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a><span class="fu">tprAssortment</span>(obj, <span class="at">pars =</span> pars)</span></code></pre></div>
